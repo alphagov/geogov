@@ -1,0 +1,6 @@
+require 'geogov'
+
+Geogov.configure do |g|
+  #for example
+  g.provider_for :centre_of_country, SomeCountryCenterProvider.new("gov")
+end
