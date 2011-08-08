@@ -28,6 +28,14 @@ class GovspeakTest < Test::Unit::TestCase
       assert_equal 0, stack.fuzzy_point.lat
       assert_equal :planet, stack.fuzzy_point.accuracy
     end
+
+  test "raises an exception if provider doesn't support required method" do
+    assert_raises(ArgumentError) { 
+      Geogov.configure do |g|
+        g.provider_for :lat_lon_from_postcode, stub
+      end      
+    }
+  end
   
   test "reconstructed stack rejects unknown params" do
       assert_raises(ArgumentError) { 

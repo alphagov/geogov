@@ -13,9 +13,14 @@ require 'geogov/providers/dracos_gazetteer'
 module Geogov
 
   def self.provider_for(method, instance)
+    unless instance.respond_to?(method)
+      raise ArgumentError.new("#{instance.class} doesn't respond to #{method}")
+    end
+    
     caching_instance = SimpleCache.new(instance)
     @@methods ||= {}
     @@methods[method] = caching_instance
+    
     unless self.methods().include?(method)
       dispatcher = <<-EOS
         def #{method}(*args, &block)               
