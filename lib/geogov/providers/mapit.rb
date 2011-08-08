@@ -39,6 +39,11 @@ module Geogov
     def respond_to?(sym)
       valid_mapit_methods.include?(sym) || super(sym)
     end
+    
+    def lat_lon_from_postcode(postcode)
+      areas = areas_for_stack_from_postcode(postcode)
+      areas[:point]
+    end
    
     # Borrowed heavily from mapit's pylib/postcodes/views.py with some amendments based on
     # pylib/mapit/areas/models.py
