@@ -67,7 +67,9 @@ module Geogov
         if level
           level = level.downcase.to_sym
           results[level] = [] unless results[level]
-          results[level] << area_info.select {|k,v| ["name","id","type"].include?(k) }
+          level_info = area_info.select { |k,v| ["name","id","type"].include?(k) }
+          level_info['ons'] = area_info['codes']['ons'] if area_info['codes'] && area_info['codes']['ons']
+          results[level] << level_info
           results[:nation] = area_info['country_name'] if results[:nation].nil?
         end
       end
@@ -88,7 +90,10 @@ module Geogov
             area_info =  query['areas'][id.to_s]
             level = typ.downcase.to_sym
             results[level] = [] unless results[level]
-            results[level] << area_info.select {|k,v| ["name","id","type"].include?(k) }
+            puts "area_info: #{area_info.inspect}"
+            level_info = area_info.select { |k,v| ["name","id","type"].include?(k) }
+            level_info['ons'] = area_info['codes']['ons'] if area_info['codes'] && area_info['codes']['ons']
+            results[level] << level_info
             results[:nation] = area_info['country_name'] if results[:nation].nil?
           end
         end
