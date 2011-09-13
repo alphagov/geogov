@@ -20,6 +20,7 @@ module Geogov
         }
         url_path = "#{base_url}#{url}"
         url_path += "/#{params.join("/")}" if params.length > 0
+        url_path += ".json"
         return url_path
       end
 
