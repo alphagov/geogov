@@ -8,7 +8,7 @@ module Geogov
       if block_given?
         yield self
       else
-        calculate_fuzzy_point
+        self.fuzzy_point = calculate_fuzzy_point
       end
     end
 
