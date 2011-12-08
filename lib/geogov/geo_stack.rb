@@ -1,9 +1,8 @@
 module Geogov
   class GeoStack
 
-    attr_accessor :postcode,:ward,:council,:nation,:country,:wmc,:lat,:lon
-    attr_accessor :fuzzy_point
-    attr_accessor :friendly_name
+    attr_accessor :ward, :council, :nation, :country, :wmc, :lat, :lon, :friendly_name
+    attr_reader :postcode, :fuzzy_point
 
     def initialize(&block)
       if block_given?
