@@ -5,8 +5,12 @@ module Geogov
     attr_accessor :fuzzy_point
     attr_accessor :friendly_name
 
-    def initialize()
-      yield self
+    def initialize(&block)
+      if block_given?
+        yield self
+      else
+        calculate_fuzzy_point
+      end
     end
 
     def calculate_fuzzy_point
