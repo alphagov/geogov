@@ -12,15 +12,18 @@ require 'geogov/providers/dracos_gazetteer'
 
 module Geogov
 
+  class UnrecognizedLocationError < RuntimeError
+  end
+
   def self.provider_for(method, instance)
     unless instance.respond_to?(method)
       raise ArgumentError.new("#{instance.class} doesn't respond to #{method}")
     end
-    
+
     caching_instance = SimpleCache.new(instance)
     @@methods ||= {}
     @@methods[method] = caching_instance
-    
+
     unless self.methods().include?(method)
       dispatcher = <<-EOS
         def #{method}(*args, &block)               
@@ -28,30 +31,39 @@ module Geogov
         end 
       EOS
       module_eval(dispatcher)
-    end  
+    end
   end
 
   def self.configure
     yield self
   end
 
-  provider_for :nearest_place_name,            DracosGazetteer.new()
-  
-  provider_for :lat_lon_to_country,            Geonames.new()
-  provider_for :centre_of_country,             Geonames.new()
+  def lat_lon_from_postcode(postcode)
+    result = Mapit.new().lat_lon_from_postcode(postcode)
 
-  provider_for :centre_of_district,            Mapit.new()
+    if result.nil?
+      raise UnrecognizedLocationError
+    end
+
+    result
+  end
+
+  provider_for :nearest_place_name, DracosGazetteer.new()
+
+  provider_for :lat_lon_to_country, Geonames.new()
+  provider_for :centre_of_country, Geonames.new()
+
+  provider_for :centre_of_district, Mapit.new()
   provider_for :areas_for_stack_from_postcode, Mapit.new()
-  provider_for :areas_for_stack_from_coords,   Mapit.new()
-  provider_for :lat_lon_from_postcode,         Mapit.new()
+  provider_for :areas_for_stack_from_coords, Mapit.new()
 
-  provider_for :remote_location,               Hostip.new()  
+  provider_for :remote_location, Hostip.new()
 
-  provider_for :map_img,                       Google.new()
-  provider_for :map_href,                      Google.new()
+  provider_for :map_img, Google.new()
+  provider_for :map_href, Google.new()
 
   extend self
-    
+
 end
 
  

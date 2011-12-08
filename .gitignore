@@ -6,3 +6,5 @@ pkg/*
 *.pyc
 *.pyo
 .venv
+*iml
+.rakeTasks
