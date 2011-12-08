@@ -5,11 +5,11 @@ Gem::Specification.new do |s|
   s.name          = "geogov"
   s.version       = "0.0.3"
   s.platform      = Gem::Platform::RUBY
-  s.authors       = ["Ben Griffiths"]
-  s.email         = ["ben@alphagov.co.uk"]
+  s.authors       = ["Ben Griffiths", "James Stewart"]
+  s.email         = ["ben@alphagov.co.uk", "jystewart@gmail.com"]
   s.homepage      = "http://github.com/alphagov/geogov"
-  s.summary       = %q{Geolocation and utilities for single domain}
-  s.description   = %q{Geolocation and utilities for single domain}
+  s.summary       = %q{Geolocation and utilities for UK Government single domain}
+  s.description   = %q{Geolocation and utilities for UK Government single domain}
 
   s.files         = Dir[
     'lib/**/*',

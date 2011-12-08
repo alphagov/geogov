@@ -1,9 +1,8 @@
 $:.unshift(File.expand_path("../lib")) unless $:.include?(File.expand_path("../lib"))
 
-require 'bundler'
-Bundler.setup :default, :development, :test
-
 require 'test/unit'
+require 'mocha'
+require 'geogov'
 
 class Test::Unit::TestCase
   class << self
@@ -16,6 +15,3 @@ class Test::Unit::TestCase
     end
   end
 end
-
-require 'mocha'
-require 'geogov'
