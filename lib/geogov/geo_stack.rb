@@ -36,13 +36,14 @@ module Geogov
     end
 
     def self.new_from_ip(ip_address)
-      remote_location = Geogov.remote_location(ip_address)
-      new() do |gs|
-        if remote_location
-          gs.country = remote_location['country']
-        end
-        gs.fuzzy_point = gs.calculate_fuzzy_point
-      end
+      #remote_location = Geogov.remote_location(ip_address)
+      new()
+      # do |gs|
+      #  if remote_location
+      #    gs.country = remote_location['country']
+      #  end
+      #  gs.fuzzy_point = gs.calculate_fuzzy_point
+      # end
     end
 
     def self.new_from_hash(hash)
