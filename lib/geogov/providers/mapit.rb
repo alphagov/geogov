@@ -52,8 +52,6 @@ module Geogov
       if ['COP', 'LBW', 'LGE', 'MTW', 'UTE', 'UTW', 'DIW'].include?(area_type)
         return 'ward'
       elsif ['CTY', 'CED'].include?(area_type)
-
-        git
         return 'council' # county
       elsif ['DIS', 'LBO'].include?(area_type)
         return 'council' # district
