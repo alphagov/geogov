@@ -3,7 +3,6 @@ require 'test_helper'
 class GovspeakTest < Test::Unit::TestCase
 
   test "IP-located stack should have country" do
-
     Geogov.configure do |g|
       g.provider_for :centre_of_country, stub(:centre_of_country => {"lat"=>37, "lon"=>-96})
       g.provider_for :remote_location, stub(:remote_location => {'country' => 'US'})
@@ -72,6 +71,54 @@ class GovspeakTest < Test::Unit::TestCase
   test "stack with country should have country accuracy" do
     stack = Geogov::GeoStack.new_from_hash("country" => "US", "fuzzy_point" => {"lat"=>"37", "lon"=>"-96", "accuracy"=>"country"})
     assert_equal :country, stack.fuzzy_point.accuracy
+  end
+
+  test "stack with postcode returns correct locality" do
+    stack = Geogov::GeoStack.new
+    stack = stack.update( 'postcode' => "SW1A 1AA" )
+
+    assert_equal "Westminster, London", stack.friendly_name
+  end
+  
+  test "stack with coordinates returns correct locality" do
+    stack = Geogov::GeoStack.new
+    stack = stack.update( 'lat' => "51.501009", "lon" => "-0.1415870" )
+
+    assert_equal "Westminster, London", stack.friendly_name
+  end
+
+  test "stack with postcode returns authorities" do
+    stack = Geogov::GeoStack.new
+    stack = stack.update( 'postcode' => "SW1A 1AA" )
+
+    assert stack.authorities.any?
+  end
+
+  test "stack with coordinates returns authorities" do
+    stack = Geogov::GeoStack.new
+    stack = stack.update( 'lat' => "51.501009", "lon" => "-0.1415870" )
+
+    assert stack.authorities.any?
+  end
+
+  test "stack with postcode returns correct locality, ward and council" do
+    stack = Geogov::GeoStack.new
+    stack = stack.update( 'postcode' => "SW1A 1AA" )
+
+    assert_equal "Westminster, London", stack.friendly_name
+    assert stack.ward and stack.ward.any?
+    assert stack.council and stack.council.any?
+    assert_equal "Westminster City Council", stack.council.first['name']
+  end
+
+  test "stack with coordinates returns correct locality, ward and council" do
+    stack = Geogov::GeoStack.new
+    stack = stack.update( 'lat' => "51.501009", "lon" => "-0.1415870" )
+
+    assert_equal "Westminster, London", stack.friendly_name
+    assert stack.ward and stack.ward.any?
+    assert stack.council and stack.council.any?
+    assert_equal "Westminster City Council", stack.council.first['name']
   end
 
 end

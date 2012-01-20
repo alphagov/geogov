@@ -20,9 +20,9 @@ module Geogov
       raise ArgumentError.new("#{instance.class} doesn't respond to #{method}")
     end
 
-    caching_instance = SimpleCache.new(instance)
+    # caching_instance = SimpleCache.new(instance)
     @@methods ||= {}
-    @@methods[method] = caching_instance
+    @@methods[method] = instance
 
     unless self.methods().include?(method)
       dispatcher = <<-EOS

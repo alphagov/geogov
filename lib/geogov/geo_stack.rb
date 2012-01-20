@@ -1,8 +1,8 @@
 module Geogov
   class GeoStack
 
-    attr_accessor :ward, :council, :nation, :country, :wmc, :lat, :lon, :friendly_name
-    attr_reader :postcode, :fuzzy_point
+    attr_accessor :ward, :council, :nation, :country, :region, :lat, :lon, :authorities, :fuzzy_point
+    attr_reader :postcode
 
     def initialize(&block)
       if block_given?
@@ -58,13 +58,10 @@ module Geogov
       {
         :fuzzy_point => self.fuzzy_point.to_hash,
         :postcode => self.postcode,
-        :ward => self.ward,
         :council => self.council,
-        :nation => self.nation,
-        :country => self.country,
-        :wmc => self.wmc,
+        :ward => self.ward,
         :friendly_name => self.friendly_name
-      }.select {|k,v| !(v.nil?) }
+      }#.select {|k,v| !(v.nil?) }
     end
 
     def update(hash)
@@ -79,6 +76,52 @@ module Geogov
         empty.fuzzy_point = empty.calculate_fuzzy_point
       end
     end
+    
+    def friendly_name
+      @friendly_name ||= build_locality
+    end
+
+    def has_authority?( type )
+      get_authority(type) ? true : false
+    end
+
+    def get_authority( type )
+      return false if self.authorities[type.upcase.to_sym] == true
+      self.authorities.nil? or self.authorities[type.upcase.to_sym].nil? ? false : self.authorities[type.upcase.to_sym]
+    end
+
+    def formatted_authority_name( type ) 
+      return false unless has_authority?(type)
+      name = get_authority(type)['name'].dup
+
+      name.sub!(/ *((District Council|Borough Council|Community|County Council|City Council|Council) ?)+/,'')
+      name.sub!(/ (North|East|South|West|Central)$/,'')
+      name.sub!(/Mid /,'')
+
+      name
+    end
+
+    def build_locality
+      return false unless self.authorities
+
+      case
+        when has_authority?('DIS') && has_authority?('CTY')
+          locality = ['DIS','CTY']
+        when has_authority?('LBO')
+          locality = ['LBO','London']
+        when has_authority?('UTA') && has_authority?('CPC') # for cornwall civil parishes
+          locality = ['CPC','UTA']
+        when has_authority?('UTA') && has_authority?('UTE')
+          locality = ['UTE','UTA']
+        when has_authority?('UTA') && has_authority?('UTW')
+          locality = ['UTW','UTA']       
+        when has_authority?('MTW') && has_authority?('MTD')
+          locality = ['MTW','MTD']
+        else
+          return false
+      end
+      locality.map {|t| formatted_authority_name(t) || t }.uniq.join(', ') 
+    end
 
     def has_valid_lat_lon(hash)
       return (hash['lon'] and hash['lat'] and hash['lon'] != "" and hash['lat'] != "")
@@ -90,16 +133,12 @@ module Geogov
         fields = Geogov.areas_for_stack_from_postcode(postcode)
         if fields
           lat_lon = fields[:point]
-          if lat_lon
-            self.friendly_name = Geogov.nearest_place_name(lat_lon['lat'],lat_lon['lon'])
-          end
           set_fields(fields.select {|k,v| k != :point})
         end
       end
     end
    
     def fetch_missing_fields_for_coords(lat, lon)
-      self.friendly_name = Geogov.nearest_place_name(lat, lon)
       fields = Geogov.areas_for_stack_from_coords(lat, lon)
       if ['England', 'Scotland', 'Northern Ireland', 'Wales'].include?(fields[:nation])
         self.country = 'UK'
@@ -115,7 +154,9 @@ module Geogov
             self.send(setter,value)
           end
         else
-          raise ArgumentError, "geo type '#{geo}' is not a valid geo type"
+          self.authorities ||= { }
+          self.authorities[geo] = value
+          # raise ArgumentError, "geo type '#{geo}' is not a valid geo type"
         end
       end
       self
