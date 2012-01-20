@@ -3,7 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   s.name          = "geogov"
-  s.version       = "0.0.5"
+  s.version       = "0.0.6"
   s.platform      = Gem::Platform::RUBY
   s.authors       = ["Ben Griffiths", "James Stewart"]
   s.email         = ["ben@alphagov.co.uk", "jystewart@gmail.com"]
