@@ -51,10 +51,8 @@ module Geogov
     def translate_area_type_to_shortcut(area_type)
       if ['COP', 'LBW', 'LGE', 'MTW', 'UTE', 'UTW', 'DIW'].include?(area_type)
         return 'ward'
-      elsif ['CTY', 'CED'].include?(area_type)
-        return 'council' # county
-      elsif ['DIS', 'LBO'].include?(area_type)
-        return 'council' # district
+      elsif ['CTY', 'CED', 'MTD', 'UTA', 'DIS', 'LBO', 'LGD'].include?(area_type)
+        return 'council'
       elsif area_type == 'EUR'
         return 'region'
       elsif area_type == 'WMC' # XXX Also maybe 'EUR', 'NIE', 'SPC', 'SPE', 'WAC', 'WAE', 'OLF', 'OLG', 'OMF', 'OMG')
