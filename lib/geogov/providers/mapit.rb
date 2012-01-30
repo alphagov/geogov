@@ -43,7 +43,7 @@ module Geogov
 
     def lat_lon_from_postcode(postcode)
       areas = areas_for_stack_from_postcode(postcode)
-      areas[:point]
+      areas[:point] or raise UnrecognizedLocationError
     end
 
     # Borrowed heavily from mapit's pylib/postcodes/views.py with some amendments based on
