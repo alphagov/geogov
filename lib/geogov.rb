@@ -43,6 +43,7 @@ module Geogov
   provider_for :lat_lon_to_country, Geonames.new()
   provider_for :centre_of_country, Geonames.new()
 
+  provider_for :lat_lon_from_postcode, Mapit.new()
   provider_for :centre_of_district, Mapit.new()
   provider_for :areas_for_stack_from_postcode, Mapit.new()
   provider_for :areas_for_stack_from_coords, Mapit.new()
