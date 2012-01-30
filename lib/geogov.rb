@@ -26,9 +26,9 @@ module Geogov
 
     unless self.methods().include?(method)
       dispatcher = <<-EOS
-        def #{method}(*args, &block)               
-          @@methods[:#{method}].__send__(#{method.inspect}, *args, &block)  
-        end 
+        def #{method}(*args, &block)
+          @@methods[:#{method}].__send__(#{method.inspect}, *args, &block)
+        end
       EOS
       module_eval(dispatcher)
     end
@@ -36,16 +36,6 @@ module Geogov
 
   def self.configure
     yield self
-  end
-
-  def lat_lon_from_postcode(postcode)
-    result = Mapit.new().lat_lon_from_postcode(postcode)
-
-    if result.nil?
-      raise UnrecognizedLocationError
-    end
-
-    result
   end
 
   provider_for :nearest_place_name, DracosGazetteer.new()
@@ -65,6 +55,3 @@ module Geogov
   extend self
 
 end
-
- 
-
