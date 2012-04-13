@@ -60,7 +60,8 @@ module Geogov
         :postcode => self.postcode,
         :council => self.council,
         :ward => self.ward,
-        :friendly_name => self.friendly_name
+        :friendly_name => self.friendly_name,
+        :nation => self.nation
       }#.select {|k,v| !(v.nil?) }
     end
 
