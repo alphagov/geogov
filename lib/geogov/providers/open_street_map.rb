@@ -16,12 +16,12 @@ module Geogov
         :lon => long,
         :show => 1
       }.merge(options)
-      
+
       if options[:marker_lat] && options[:marker_lon]
         options[:mlat0] = options.delete(:marker_lat)
         options[:mlon0] = options.delete(:marker_lon)
       end
-      
+
       params = Geogov.hash_to_params(options)
 
       "#{@url}/StaticMap?#{params}"
@@ -34,12 +34,12 @@ module Geogov
         :lon => long,
         :layers => "M"
       }.merge(options)
-      
+
       if options[:marker_lat] && options[:marker_lon]
         options[:mlat0] = options.delete(:marker_lat)
         options[:mlon0] = options.delete(:marker_lon)
       end
-      
+
       params = Geogov.hash_to_params(options)
 
       "http://www.openstreetmap.org/?#{params}"

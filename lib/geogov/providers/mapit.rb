@@ -64,11 +64,11 @@ module Geogov
       query = self.point("4326", [lon, lat])
       results = {:point => {'lat' => lat, 'lon' => lon}}
       councils = { }
-      
+
       query.each do |id, area_info|
         type = area_info['type'].upcase.to_sym
         level = translate_area_type_to_shortcut(area_info['type'])
-        
+
         if level
           level = level.downcase.to_sym
           results[level] = [] unless results[level]
@@ -77,11 +77,11 @@ module Geogov
           results[level] << level_info
           results[:nation] = area_info['country_name'] if results[:nation].nil?
         end
-        
+
         councils[type] = { 'name' => area_info['name'], 'type' => area_info['type'], 'id' => area_info['id'] }
       end
 
-      return councils.merge results 
+      return councils.merge results
     end
 
     def areas_for_stack_from_postcode(postcode)
@@ -93,7 +93,7 @@ module Geogov
         query['areas'].each do |i, area|
           type = area['type'].to_sym
           results[type] = area
-        end 
+        end
 
         query['shortcuts'].each do |typ, i|
           if i.is_a? Hash

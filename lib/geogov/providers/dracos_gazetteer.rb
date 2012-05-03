@@ -1,5 +1,5 @@
 module Geogov
-  class DracosGazetteer 
+  class DracosGazetteer
       def initialize(default_url = "http://gazetteer.dracos.vm.bytemark.co.uk")
           @base = default_url
       end
@@ -13,7 +13,7 @@ module Geogov
           return nil
         end
       end
-     
+
 
   end
 end

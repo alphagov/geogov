@@ -8,7 +8,7 @@ module Geogov
     end
 
     def remote_location(ip_address)
-      params = {:ip => ip_address, :position => true} 
+      params = {:ip => ip_address, :position => true}
       results = Geogov.get(@url + "?" + Geogov.hash_to_params(params))
       return nil if results.nil?
       response = YAML.load(results + "\n")
@@ -21,7 +21,7 @@ module Geogov
       end
       return nil if location['city'] =~ /Unknown City/
       return nil if location['city'] =~ /Private Address/
-      
+
       # I found these very unreliable, so better they're
       # not there to tempt anyone
       location.delete("city")

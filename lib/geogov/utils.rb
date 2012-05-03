@@ -2,7 +2,7 @@ require 'json'
 require 'net/http'
 
 module Geogov
-  
+
   def get(url)
     url = URI.parse(url) unless url.is_a? URI
     response = Net::HTTP.start(url.host, url.port) { |http|
@@ -31,7 +31,7 @@ module Geogov
     class LruCache
 
       def initialize(size = 100)
-        @size = size 
+        @size = size
         @bucket1 = {}
         @bucket2 = {}
       end
@@ -67,14 +67,14 @@ module Geogov
     class SimpleCache
       def initialize(delegate)
         @delegate = delegate
-        @cache = LruCache.new(1000) 
+        @cache = LruCache.new(1000)
       end
 
       def method_missing(m, *args)
         arg_key = args.inspect
         cache_key = "#{m}--#{arg_key}"
         if @cache[cache_key]
-          return @cache[cache_key] 
+          return @cache[cache_key]
         else
           result = @delegate.send(m,*args)
           @cache[cache_key] = result
@@ -82,6 +82,6 @@ module Geogov
         end
       end
     end
-  
+
 
 end

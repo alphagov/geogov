@@ -75,35 +75,35 @@ class GovspeakTest < Test::Unit::TestCase
 
   test "stack with postcode returns correct locality" do
     stack = Geogov::GeoStack.new
-    stack = stack.update( 'postcode' => "SW1A 1AA" )
+    stack = stack.update('postcode' => "SW1A 1AA")
 
     assert_equal "Westminster, London", stack.friendly_name
   end
-  
+
   test "stack with coordinates returns correct locality" do
     stack = Geogov::GeoStack.new
-    stack = stack.update( 'lat' => "51.501009", "lon" => "-0.1415870" )
+    stack = stack.update('lat' => "51.501009", "lon" => "-0.1415870")
 
     assert_equal "Westminster, London", stack.friendly_name
   end
 
   test "stack with postcode returns authorities" do
     stack = Geogov::GeoStack.new
-    stack = stack.update( 'postcode' => "SW1A 1AA" )
+    stack = stack.update('postcode' => "SW1A 1AA")
 
     assert stack.authorities.any?
   end
 
   test "stack with coordinates returns authorities" do
     stack = Geogov::GeoStack.new
-    stack = stack.update( 'lat' => "51.501009", "lon" => "-0.1415870" )
+    stack = stack.update('lat' => "51.501009", "lon" => "-0.1415870")
 
     assert stack.authorities.any?
   end
 
   test "stack with postcode returns correct locality, ward and council" do
     stack = Geogov::GeoStack.new
-    stack = stack.update( 'postcode' => "SW1A 1AA" )
+    stack = stack.update('postcode' => "SW1A 1AA")
 
     assert_equal "Westminster, London", stack.friendly_name
     assert stack.ward and stack.ward.any?
@@ -113,7 +113,7 @@ class GovspeakTest < Test::Unit::TestCase
 
   test "stack with coordinates returns correct locality, ward and council" do
     stack = Geogov::GeoStack.new
-    stack = stack.update( 'lat' => "51.501009", "lon" => "-0.1415870" )
+    stack = stack.update('lat' => "51.501009", "lon" => "-0.1415870")
 
     assert_equal "Westminster, London", stack.friendly_name
     assert stack.ward and stack.ward.any?

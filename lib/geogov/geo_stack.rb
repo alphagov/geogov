@@ -77,21 +77,21 @@ module Geogov
         empty.fuzzy_point = empty.calculate_fuzzy_point
       end
     end
-    
+
     def friendly_name
       @friendly_name ||= build_locality
     end
 
-    def has_authority?( type )
+    def has_authority?(type)
       get_authority(type) ? true : false
     end
 
-    def get_authority( type )
+    def get_authority(type)
       return false if self.authorities[type.upcase.to_sym] == true
       self.authorities.nil? or self.authorities[type.upcase.to_sym].nil? ? false : self.authorities[type.upcase.to_sym]
     end
 
-    def formatted_authority_name( type ) 
+    def formatted_authority_name(type)
       return false unless has_authority?(type)
       name = get_authority(type)['name'].dup
 
@@ -106,22 +106,22 @@ module Geogov
       return false unless self.authorities
 
       case
-        when has_authority?('DIS') && has_authority?('CTY')
-          locality = ['DIS','CTY']
-        when has_authority?('LBO')
-          locality = ['LBO','London']
-        when has_authority?('UTA') && has_authority?('CPC') # for cornwall civil parishes
-          locality = ['CPC','UTA']
-        when has_authority?('UTA') && has_authority?('UTE')
-          locality = ['UTE','UTA']
-        when has_authority?('UTA') && has_authority?('UTW')
-          locality = ['UTW','UTA']       
-        when has_authority?('MTW') && has_authority?('MTD')
-          locality = ['MTW','MTD']
-        else
-          return false
+      when has_authority?('DIS') && has_authority?('CTY')
+        locality = ['DIS','CTY']
+      when has_authority?('LBO')
+        locality = ['LBO','London']
+      when has_authority?('UTA') && has_authority?('CPC') # for cornwall civil parishes
+        locality = ['CPC','UTA']
+      when has_authority?('UTA') && has_authority?('UTE')
+        locality = ['UTE','UTA']
+      when has_authority?('UTA') && has_authority?('UTW')
+        locality = ['UTW','UTA']
+      when has_authority?('MTW') && has_authority?('MTD')
+        locality = ['MTW','MTD']
+      else
+        return false
       end
-      locality.map {|t| formatted_authority_name(t) || t }.uniq.join(', ') 
+      locality.map {|t| formatted_authority_name(t) || t }.uniq.join(', ')
     end
 
     def has_valid_lat_lon(hash)
@@ -138,7 +138,7 @@ module Geogov
         end
       end
     end
-   
+
     def fetch_missing_fields_for_coords(lat, lon)
       fields = Geogov.areas_for_stack_from_coords(lat, lon)
       if ['England', 'Scotland', 'Northern Ireland', 'Wales'].include?(fields[:nation])
@@ -157,7 +157,6 @@ module Geogov
         else
           self.authorities ||= { }
           self.authorities[geo] = value
-          # raise ArgumentError, "geo type '#{geo}' is not a valid geo type"
         end
       end
       self

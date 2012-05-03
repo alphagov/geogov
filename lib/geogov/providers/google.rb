@@ -1,10 +1,10 @@
 module Geogov
 
   class Google
-    
+
     def dimension(l1,l2)
       "#{l1}x#{l2}"
-    end    
+    end
 
     def location(l1,l2)
       "#{l1},#{l2}"
@@ -19,9 +19,9 @@ module Geogov
       }
       if options[:marker_lat] && options[:marker_lon]
         location = location(options[:marker_lat],options[:marker_lon])
-        g_options[:markers] = ["color:blue",location].join("|") 
+        g_options[:markers] = ["color:blue",location].join("|")
       end
-      
+
       params = Geogov.hash_to_params(g_options)
 
       "http://maps.google.com/maps/api/staticmap?#{params}"
@@ -32,11 +32,11 @@ module Geogov
       g_options = {
         :z => options[:z] || 14,
         :ie => "UTF8",
-        :q  => location(lat,lon)  
+        :q  => location(lat,lon)
       }
       if options[:marker_lat] && options[:marker_lon]
         location = location(options[:marker_lat],options[:marker_lon])
-        g_options[:sll] = location 
+        g_options[:sll] = location
       end
 
       params = Geogov.hash_to_params(g_options)
