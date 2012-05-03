@@ -62,7 +62,7 @@ module Geogov
         :ward => self.ward,
         :friendly_name => self.friendly_name,
         :nation => self.nation
-      }#.select {|k,v| !(v.nil?) }
+      }
     end
 
     def update(hash)
