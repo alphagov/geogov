@@ -89,10 +89,11 @@ module Geogov
     def formatted_authority_name(type)
       authority = get_authority(type) or return type
 
-      authority["name"].
-        sub(/ *((District Council|Borough Council|Community|County Council|City Council|Council) ?)+/,'').
-        sub(/ (North|East|South|West|Central)$/,'').
-        sub(/Mid /,'')
+      authority["name"].gsub(%r{
+        \s*(((District\s|Borough\s|County\s|City\s|)Council|Community)\s?)+ |
+        \s(North|East|South|West|Central)$ |
+        Mid\s
+      }x, "")
     end
 
     LOCALITY_TRANSLATION = {
