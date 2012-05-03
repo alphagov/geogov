@@ -87,8 +87,7 @@ module Geogov
     end
 
     def get_authority(type)
-      return false if self.authorities[type.upcase.to_sym] == true
-      self.authorities.nil? or self.authorities[type.upcase.to_sym].nil? ? false : self.authorities[type.upcase.to_sym]
+      authorities[type.upcase.to_sym]
     end
 
     def formatted_authority_name(type)
