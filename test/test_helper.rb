@@ -1,4 +1,5 @@
-$:.unshift(File.expand_path("../lib")) unless $:.include?(File.expand_path("../lib"))
+lib = File.expand_path("../../lib", __FILE__)
+$:.unshift lib unless $:.include?(lib)
 
 require 'test/unit'
 require 'mocha'
