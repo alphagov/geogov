@@ -116,26 +116,25 @@ module Geogov
     # NIE | NI Assembly Constituency
     # NIA | NI Assembly
 
-    LOCALITY_TRANSLATION = {
-      %w[ DIS CTY ] => %w[ DIS CTY ],
-      %w[ LBO ]     => %w[ LBO London ],
-      %w[ UTA CPC ] => %w[ CPC UTA ], # for cornwall civil parishes
-      %w[ UTA UTE ] => %w[ UTE UTA ],
-      %w[ UTA UTW ] => %w[ UTW UTA ],
-      %w[ MTW MTD ] => %w[ MTW MTD ],
-      %w[ LGW LGD ] => %w[ LGW LGD ]
-    }
+    LOCALITY_KEYS = [
+      [:LBO],       # London (special case)
+      [:DIS, :CTY],
+      [:CPC, :UTA], # Cornwall civil parishes
+      [:UTE, :UTA],
+      [:UTW, :UTA],
+      [:MTW, :MTD],
+      [:LGW, :LGD]
+    ]
 
     def build_locality
       return false unless authorities
+      selected_keys = LOCALITY_KEYS.find { |t|
+        (t - authorities.keys).none?
+      } or return false
 
-      LOCALITY_TRANSLATION.each do |matches, locality|
-        if matches.all? { |a| get_authority(a) }
-          return locality.map { |a| formatted_authority_name(a) }.uniq.join(", ")
-        end
-      end
-
-      false
+      parts = selected_keys.map { |a| formatted_authority_name(a) }
+      parts << "London" if selected_keys == [:LBO]
+      parts.uniq.join(", ")
     end
 
     def has_valid_lat_lon(hash)
