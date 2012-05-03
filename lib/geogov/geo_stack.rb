@@ -83,7 +83,7 @@ module Geogov
     end
 
     def has_authority?(type)
-      get_authority(type) ? true : false
+      !!get_authority(type)
     end
 
     def get_authority(type)
@@ -91,14 +91,12 @@ module Geogov
     end
 
     def formatted_authority_name(type)
-      return false unless has_authority?(type)
-      name = get_authority(type)['name'].dup
+      authority = get_authority(type) or return nil
 
-      name.sub!(/ *((District Council|Borough Council|Community|County Council|City Council|Council) ?)+/,'')
-      name.sub!(/ (North|East|South|West|Central)$/,'')
-      name.sub!(/Mid /,'')
-
-      name
+      authority["name"].
+        sub(/ *((District Council|Borough Council|Community|County Council|City Council|Council) ?)+/,'').
+        sub(/ (North|East|South|West|Central)$/,'').
+        sub(/Mid /,'')
     end
 
     def build_locality
