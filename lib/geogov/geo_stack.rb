@@ -82,16 +82,12 @@ module Geogov
       @friendly_name ||= build_locality
     end
 
-    def has_authority?(type)
-      !!get_authority(type)
-    end
-
     def get_authority(type)
       authorities[type.upcase.to_sym]
     end
 
     def formatted_authority_name(type)
-      authority = get_authority(type) or return nil
+      authority = get_authority(type) or return type
 
       authority["name"].
         sub(/ *((District Council|Borough Council|Community|County Council|City Council|Council) ?)+/,'').
@@ -99,30 +95,29 @@ module Geogov
         sub(/Mid /,'')
     end
 
-    def build_locality
-      return false unless self.authorities
+    LOCALITY_TRANSLATION = {
+      %w[ DIS CTY ] => %w[ DIS CTY ],
+      %w[ LBO ]     => %w[ LBO London ],
+      %w[ UTA CPC ] => %w[ CPC UTA ], # for cornwall civil parishes
+      %w[ UTA UTE ] => %w[ UTE UTA ],
+      %w[ UTA UTW ] => %w[ UTW UTA ],
+      %w[ MTW MTD ] => %w[ MTW MTD ]
+    }
 
-      case
-      when has_authority?('DIS') && has_authority?('CTY')
-        locality = ['DIS','CTY']
-      when has_authority?('LBO')
-        locality = ['LBO','London']
-      when has_authority?('UTA') && has_authority?('CPC') # for cornwall civil parishes
-        locality = ['CPC','UTA']
-      when has_authority?('UTA') && has_authority?('UTE')
-        locality = ['UTE','UTA']
-      when has_authority?('UTA') && has_authority?('UTW')
-        locality = ['UTW','UTA']
-      when has_authority?('MTW') && has_authority?('MTD')
-        locality = ['MTW','MTD']
-      else
-        return false
+    def build_locality
+      return false unless authorities
+
+      LOCALITY_TRANSLATION.each do |matches, locality|
+        if matches.all? { |a| get_authority(a) }
+          return locality.map { |a| formatted_authority_name(a) }.uniq.join(", ")
+        end
       end
-      locality.map {|t| formatted_authority_name(t) || t }.uniq.join(', ')
+
+      false
     end
 
     def has_valid_lat_lon(hash)
-      return (hash['lon'] and hash['lat'] and hash['lon'] != "" and hash['lat'] != "")
+      %w[ lat lon ].none? { |k| hash[k].to_s.empty? }
     end
 
     def fetch_missing_fields_for_postcode(postcode)
