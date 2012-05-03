@@ -90,13 +90,40 @@ module Geogov
       }x, "")
     end
 
+    # Key to the three-letter abbreviations
+    # CTY | County
+    # CED | County Electoral Division
+    # DIS | District
+    # DIW | District Ward
+    # EUR | European Region
+    # GLA | Greater London Authority
+    # LAC | Greater London Authority Assembly Constituency
+    # LBR | London Borough
+    # LBW | London Borough Ward
+    # MTD | Metropolitan District
+    # MTW | Metropolitan District Ward
+    # SPE | Scottish Parliament Electoral Region
+    # SPC | Scottish Parliament Constituency
+    # UTA | Unitary Authority
+    # UTE | Unitary Authority Electoral Division
+    # UTW | Unitary Authority Ward
+    # WAE | Welsh Assembly Electoral Region
+    # WAC | Welsh Assembly Constituency
+    # WMC | Westminster Constituency
+    # LGW | NI Ward
+    # LGD | NI Council
+    # LGE | NI Electoral Area
+    # NIE | NI Assembly Constituency
+    # NIA | NI Assembly
+
     LOCALITY_TRANSLATION = {
       %w[ DIS CTY ] => %w[ DIS CTY ],
       %w[ LBO ]     => %w[ LBO London ],
       %w[ UTA CPC ] => %w[ CPC UTA ], # for cornwall civil parishes
       %w[ UTA UTE ] => %w[ UTE UTA ],
       %w[ UTA UTW ] => %w[ UTW UTA ],
-      %w[ MTW MTD ] => %w[ MTW MTD ]
+      %w[ MTW MTD ] => %w[ MTW MTD ],
+      %w[ LGW LGD ] => %w[ LGW LGD ]
     }
 
     def build_locality

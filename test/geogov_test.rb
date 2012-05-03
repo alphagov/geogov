@@ -80,6 +80,20 @@ class GovspeakTest < Test::Unit::TestCase
     assert_equal "Westminster, London", stack.friendly_name
   end
 
+  test "stack with Belfast postcode returns correct locality" do
+    stack = Geogov::GeoStack.new
+    stack = stack.update('postcode' => "BT2 8BP")
+
+    assert_equal "Shaftesbury, Belfast", stack.friendly_name
+  end
+
+  test "stack with non-Belfast Northern Ireland postcode returns correct locality" do
+    stack = Geogov::GeoStack.new
+    stack = stack.update('postcode' => "BT35 6AZ")
+
+    assert_equal "Ballybot, Newry and Mourne", stack.friendly_name
+  end
+
   test "stack with coordinates returns correct locality" do
     stack = Geogov::GeoStack.new
     stack = stack.update('lat' => "51.501009", "lon" => "-0.1415870")
