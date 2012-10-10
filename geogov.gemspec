@@ -1,9 +1,11 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
 
+require 'geogov/version'
+
 Gem::Specification.new do |s|
   s.name          = "geogov"
-  s.version       = "0.0.11"
+  s.version       = Geogov::VERSION
 
   s.platform      = Gem::Platform::RUBY
   s.authors       = ["Ben Griffiths", "James Stewart"]
