@@ -65,7 +65,8 @@ module Geogov
       results = {:point => {'lat' => lat, 'lon' => lon}}
       councils = { }
 
-      query.each do |id, area_info|
+      areas = Hash[query.select {|key, value| key =~ /^\d+$/}]
+      areas.each do |id, area_info|
         type = area_info['type'].upcase.to_sym
         level = translate_area_type_to_shortcut(area_info['type'])
 
