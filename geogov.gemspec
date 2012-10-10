@@ -25,4 +25,5 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rake', '~> 0.9.0'
   s.add_development_dependency 'mocha', '~> 0.9.0'
+  s.add_development_dependency 'gem_publisher', '~> 1.1.1'
 end

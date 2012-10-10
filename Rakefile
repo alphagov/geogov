@@ -1,15 +1,25 @@
-require 'rake'
+# -*- encoding: utf-8 -*-
+
+require "bundler/gem_tasks"
+require "rdoc/task"
 require 'rake/testtask'
-require 'bundler'
 
-Bundler::GemHelper.install_tasks
+RDoc::Task.new do |rd|
+  rd.rdoc_files.include("lib/**/*.rb")
+  rd.rdoc_dir = "rdoc"
+end
 
-task :default => [:test_units]
-
-desc "Run basic tests"
-Rake::TestTask.new("test_units") { |t|
+Rake::TestTask.new("test") do |t|
+  t.ruby_opts << "-rubygems"
   t.libs << "test"
-  t.pattern = 'test/*_test.rb'
+  t.test_files = FileList["test/**/*_test.rb"]
   t.verbose = true
-  t.warning = true
-}
+end
+
+require "gem_publisher"
+task :publish_gem do |t|
+  gem = GemPublisher.publish_if_updated("geogov.gemspec", :rubygems)
+  puts "Published #{gem}" if gem
+end
+
+task :default => :test
